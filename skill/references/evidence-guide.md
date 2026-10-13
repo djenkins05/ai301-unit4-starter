@@ -1,68 +1,106 @@
+
 # Evidence guide: where evidence lives in a PR package
 
-<!--
-THIS IS THE PART YOU WRITE (third week running: the map stays in your
-hands). Your tool uses this guide as its map: for every kind of
-evidence a rubric check names, this file says WHERE to find it in a PR
-package and WHAT GOOD LOOKS LIKE when you do.
+## Evidence boundaries
 
-The four families below are the harness's failure categories under
-the names the eval README uses: plan fidelity = silent-drift, test
-evidence = not-tested, diff quality = unreviewable, standards and
-comms = standards-wall. A package that fails none of them is a
-clear-accept. Under each family heading below, write:
+In eval mode, use only the information provided in the package bundle, including the issue context, plan-context block, repo-facts block, candidate PR title, description, commits, diff, and test evidence. Do not retrieve outside evidence or assume missing information exists elsewhere.
 
-- Where it lives: the exact places to look. In an eval bundle (which
-  section of the package: the plan-context block's scope pair and test
-  plan, the candidate PR's diff, commits, description, or
-  test-evidence section, the repo-facts block's template asks and
-  stated policy). In live mode (where in your working copy and on
-  GitHub: your plan.md and its deviation notes, your branch's diff,
-  your draft title and description, your captured test output, the
-  repo's PR template and CONTRIBUTING.md).
-- What good looks like: one or two sentences someone else could apply.
-  Prefer observable conditions ("every changed file falls inside the
-  plan's stated boundary or a deviation note") over adjectives ("the
-  diff is clean").
+In live mode, use the student's posted plan.md and recorded deviations, branch diff, draft PR title and description, test results, issue thread, and relevant repository documentation. Read scope.md first to confirm that the PR targets the allowed repository. For a house-chain student, use the house plan and reproduction evidence provided for that issue.
 
-A rubric check whose evidence this guide cannot locate is a check
-nobody else can execute, and this week that cuts three ways: your
-procedure says WHEN to gather each family, this guide says WHERE, and
-your SKILL.md says the tool reads both. Write the map you wish your
-executor had.
--->
+Use the evidence sources below to evaluate the checks in rubric.md. Do not treat an unstated repository requirement as mandatory or accept unsupported claims as proof.
 
 ## Plan fidelity (harness category: silent-drift)
 
-<!-- Where the plan states its scope, boundary, and deviation notes,
-and where the diff shows what actually changed. What it means for a
-diff to match the plan, for an honest deviation to re-tie a mismatch,
-and what silent drift looks like in each direction (more than the
-plan, or less with no note). The description's fidelity claims read
-against the diff live here too: a description claiming more or less
-than the diff delivers is silent drift, not a comms problem. -->
+**Where it lives:**
+
+In eval mode, read the plan-context block's scope pair, implementation steps, expected behavior, and recorded deviations. Compare these with the candidate PR's unified diff, changed files, commits, title, and description. Use the issue context to confirm the intended behavior.
+
+In live mode, read the student's posted plan.md, including any deviations, and compare it with the complete branch diff using `git diff main...HEAD` when the default branch is main. Review the issue description and relevant maintainer comments to identify the intended scope.
+
+**What good looks like:**
+
+Every functional change in the diff falls within the plan's stated scope or is covered by a recorded deviation. Each planned change is implemented, or any incomplete portion is explicitly identified as a limitation, deferral, or documented deviation.
+
+The PR title and description accurately describe the changes shown in the diff. They do not claim that functionality was implemented or verified when the available evidence does not support that claim.
+
+An honestly disclosed limitation or recorded deviation can be acceptable. A PR should not silently introduce unrelated work, omit planned changes without explanation, or claim completion that the diff contradicts.
+
+**Related rubric checks:**
+
+- Changes match the plan
+- Planned work is accounted for
+- Description matches the actual changes
 
 ## Test evidence (harness category: not-tested)
 
-<!-- Where the PR shows its proof: the test-evidence section's
-before/after against the plan's test plan and the reproduction's own
-steps, and the outcome of the repo's own checks or suite. What
-decisive looks like (an observable behavior named, the expected-after
-stated, the checks' outcome visible) next to "tests pass". -->
+**Where it lives:**
+
+In eval mode, read the plan-context block's test plan and reproduction steps. Compare these with the candidate PR's test-evidence section, including before-and-after results, executed commands, and recorded outputs. Read the repo-facts block to identify applicable repository testing requirements.
+
+In live mode, compare the student's posted reproduction evidence and plan.md test plan with the captured before-and-after test results. Review the repository's testing instructions and applicable test suite to determine which checks should be executed.
+
+**What good looks like:**
+
+The PR identifies the original failure, explains the expected corrected behavior, and provides observable test results showing what happened before and after the implementation.
+
+The test evidence must exercise the behavior described in the issue rather than an unrelated code path. Another developer should be able to identify what was tested and determine whether the observed result supports the claimed change.
+
+Applicable repository checks are identified, and their execution outcomes are visible. An honestly reported failed check does not automatically invalidate the intended fix when the evidence establishes that the failure is unrelated to the change.
+
+Statements such as "tests pass" or "the issue is fixed" are not sufficient without observable results or supporting evidence.
+
+**Related rubric checks:**
+
+- Reproduction evidence demonstrates the change
+- Repository checks have visible results
 
 ## Diff quality (harness category: unreviewable)
 
-<!-- Where the change itself lives: the unified diff and the commit
-list. What a reviewable change looks like (the fix visible, nothing
-unrelated riding along) and the debris tells: debug leftovers, dead
-code, commented-out blocks, formatting churn, drive-by edits. -->
+**Where it lives:**
+
+In eval mode, inspect the candidate PR's unified diff, changed-file list, and commit list. Compare the changes with the plan-context block's intended implementation, scope boundaries, and recorded deviations.
+
+In live mode, inspect the complete branch diff using `git diff main...HEAD` when the default branch is main. Review the changed files and commit history to determine whether the implementation contains only the intended fix and necessary supporting changes.
+
+**What good looks like:**
+
+The diff contains the intended implementation and necessary supporting edits without unrelated changes that materially interfere with review.
+
+A reviewer can identify the code responsible for the fix and determine how it addresses the issue. The changes remain focused on the plan and any recorded deviations.
+
+Debugging statements, unrelated formatting changes, dead code, commented-out experiments, temporary files, and unnecessary generated artifacts should not remain when they obscure the intended change.
+
+A change is not rejected simply because it modifies multiple files or requires supporting edits. The decision depends on whether those changes are related to the plan and remain reviewable.
+
+**Related rubric checks:**
+
+- Diff is focused and reviewable
 
 ## Standards and comms (harness category: standards-wall)
 
-<!-- Where the repo states its asks (the repo-facts block's PR
-template sections, contributing instructions, and stated policy,
-including AI-use disclosure) and where the PR honors them: the
-stated sections filled with real content, the disclosure present,
-explicit maintainer direction in the thread engaged. What compliant
-looks like next to boilerplate or a visibly ignored ask. (Whether
-the description's claims match the diff is plan fidelity, above.) -->
+**Where it lives:**
+
+In eval mode, read the repo-facts block's PR template requirements, contribution instructions, stated policies, AI-use disclosure requirements, and relevant maintainer directions. Compare these with the candidate PR's title, description, disclosure section, commits, and other supplied evidence.
+
+In live mode, read the repository's PR template, CONTRIBUTING.md, any applicable AI-use policy such as AI_POLICY.md or AI_USAGE_POLICY.md, and relevant maintainer instructions in the issue thread.
+
+Compare the draft PR title and description with the repository's stated requirements. Also read voice-guide.md and record any communication rules the outgoing PR text violates.
+
+**What good looks like:**
+
+The PR follows all applicable repository contribution requirements and explicit maintainer instructions. Every required PR template section contains information addressing its purpose, or a justified not-applicable response when the repository permits one.
+
+When the repository requires AI-use disclosure, the PR provides the information requested by that policy. Do not assume AI assistance was used without supporting evidence, and do not invent disclosure requirements that the repository has not stated.
+
+The PR title and description identify the issue being addressed, summarize the actual changes, report relevant test results, and disclose material limitations when applicable.
+
+A concise PR can pass when its content satisfies the requirements. Do not reject a PR based only on its length, formatting, or writing style.
+
+In live mode, report violations of voice-guide.md separately. A voice-guide violation does not change the verdict unless it also violates a rubric check.
+
+**Related rubric checks:**
+
+- Pull request follows the repository template
+- AI-use disclosure follows repository policy
+- Contribution instructions are followed
+- PR explains the change for reviewers
